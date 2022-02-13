@@ -2,20 +2,21 @@
 name = "tasker"
 version = "0.1.0"
 authors = ["Mark Jones <markjonestx@gmail.com>"]
-edition = "2018"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 colored = "2"
-dirs = "3.0"
+dirs = "4.0"
 serde_json = "1.0"
 
 [dependencies.clap]
-version = "3.0.0-beta.2"
-features = ["color", "suggestions"]
+version = "3.0"
+features = ["color", "suggestions", "unicode"]
 
 [dependencies.chrono]
+version = "0.4"
 default-features = false
 features = ["alloc", "std", "clock"]
 

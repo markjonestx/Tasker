@@ -8,7 +8,8 @@ mod global_settings;
 mod parse;
 mod tasks;
 
-use clap::{clap_app, ArgMatches};
+use clap::{arg, App, ArgMatches};
+
 
 fn main() {
     let args: ArgMatches = parse_args();
@@ -25,29 +26,44 @@ fn main() {
     print!("{}\n", output);
 }
 
-/// # Parses the arguments for the program
+
 fn parse_args() -> ArgMatches {
-    clap_app!(tasker =>
-        (version: "0.1")
-        (about: "a rust clone of Taskbook")
-        (override_usage: "$ ts [<options> ...]")
-        (@arg ARCHIVE: -a --archive "Display archived items")
-        (@arg BEGIN: -b --begin +takes_value +multiple "Start/pause task")
-        (@arg CHECK: -c --check +takes_value "Check/uncheck task")
-        (@arg CLEAR: --clear "Delete all checked items")
-        (@arg COPY: -y --copy +takes_value "Copy item description")
-        (@arg DELETE: -d --delete +takes_value "Delete item")
-        (@arg EDIT: -e --edit +takes_value "Edit item description")
-        (@arg FIND: -f --find +takes_value "Search for items")
-        (@arg LIST: -l --list +takes_value "List items by attributes")
-        (@arg MOVE: -m --move +takes_value "Move item between boards")
-        (@arg NOTE: -n --note +takes_value +multiple "Create note")
-        (@arg PRIORITY: -p --priority +takes_value "Update priority of task")
-        (@arg RESTORE: -r --restore +takes_value "Restore items from archive")
-        (@arg STAR: -s --start +takes_value "Star/unstar item")
-        (@arg TASK: -t --task +takes_value "Create task")
-        (@arg TIMELINE: -i --timeline "Display timeline view")
-        (after_help: "EXAMPLES:
+    App::new("Tasker")
+        .version("0.1")
+        .about("a rust clone of Taskbook")
+        .override_usage("$ ts [<options> ...]")
+        .arg(arg!(ARCHIVE: -a --archive "Display archived items"))
+        .arg(arg!(BEGIN: -b --begin "Start/pause task")
+            .takes_value(true)
+            .multiple_occurrences(true))
+        .arg(arg!(CHECK: -c --check "Check/uncheck task")
+            .takes_value(true))
+        .arg(arg!(CLEAR: --clear "Delete all checked items"))
+        .arg(arg!(COPY: -y --copy "Copy item description")
+            .takes_value(true))
+        .arg(arg!(DELETE: -d --delete "Delete item")
+            .takes_value(true))
+        .arg(arg!(EDIT: -e --edit "Edit item description")
+            .takes_value(true))
+        .arg(arg!(FIND: -f --find "Search for items")
+            .takes_value(true))
+        .arg(arg!(LIST: -l --list "List items by attributes")
+            .takes_value(true))
+        .arg(arg!(MOVE: -m --move "Move item between boards")
+            .takes_value(true))
+        .arg(arg!(NOTE: -n --note "Create note")
+            .takes_value(true)
+            .multiple_occurrences(true))
+        .arg(arg!(PRIORITY: -p --priority "Update priority of task")
+            .takes_value(true))
+        .arg(arg!(RESTORE: -r --restore "Restore items from archive")
+            .takes_value(true))
+        .arg(arg!(STAR: -s --star "Star/unstar item")
+            .takes_value(true))
+        .arg(arg!(TASK: -t --task "Create task")
+            .takes_value(true))
+        .arg(arg!(TIMELINE: -i --timeline "Display timeline view"))
+        .after_help("EXAMPLES:
     $ ts
     $ ts --archive
     $ ts --begin 2 3
@@ -67,9 +83,54 @@ fn parse_args() -> ArgMatches {
     $ ts --task @coding Finish something for once
     $ ts --task Make some buttercream
     $ ts --timeline")
-    )
-    .get_matches()
+        .get_matches()
 }
+
+/// # Parses the arguments for the program
+// fn parse_args() -> ArgMatches {
+//     clap_app!(tasker =>
+//         (version: "0.1")
+//         (about: "a rust clone of Taskbook")
+//         (override_usage: "$ ts [<options> ...]")
+//         (@arg ARCHIVE: -a --archive "Display archived items")
+//         (@arg BEGIN: -b --begin +takes_value +multiple "Start/pause task")
+//         (@arg CHECK: -c --check +takes_value "Check/uncheck task")
+//         (@arg CLEAR: --clear "Delete all checked items")
+//         (@arg COPY: -y --copy +takes_value "Copy item description")
+//         (@arg DELETE: -d --delete +takes_value "Delete item")
+//         (@arg EDIT: -e --edit +takes_value "Edit item description")
+//         (@arg FIND: -f --find +takes_value "Search for items")
+//         (@arg LIST: -l --list +takes_value "List items by attributes")
+//         (@arg MOVE: -m --move +takes_value "Move item between boards")
+//         (@arg NOTE: -n --note +takes_value +multiple "Create note")
+//         (@arg PRIORITY: -p --priority +takes_value "Update priority of task")
+//         (@arg RESTORE: -r --restore +takes_value "Restore items from archive")
+//         (@arg STAR: -s --start +takes_value "Star/unstar item")
+//         (@arg TASK: -t --task +takes_value "Create task")
+//         (@arg TIMELINE: -i --timeline "Display timeline view")
+//         (after_help: "EXAMPLES:
+    // $ ts
+    // $ ts --archive
+    // $ ts --begin 2 3
+    // $ ts --check 1 2
+    // $ ts --clear
+    // $ ts --copy 1 2 3
+    // $ ts --delete 4
+    // $ ts --edit @3 Merge PR #42
+    // $ ts --find documentation
+    // $ ts --list pending coding
+    // $ ts --move @1 cooking
+    // $ ts --note @coding Actually learn rust
+    // $ ts --priority @3 2
+    // $ ts --restore 4
+    // $ ts --star 2
+    // $ ts --task @coding @issues Patch issue 32
+    // $ ts --task @coding Finish something for once
+    // $ ts --task Make some buttercream
+    // $ ts --timeline")
+    // )
+//     .get_matches()
+// }
 
 fn run_program(
     settings: &Settings,
